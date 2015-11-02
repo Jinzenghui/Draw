@@ -5,17 +5,27 @@ import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
 import java.awt.geom.*;
+import java.io.File;
+import java.io.IOException;
 
-public class DrawColor {
+import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class DrawColor extends JComponent{
 	
-	public static void main(String[] args){
+	private BufferedImage image = null;
+	private int size = 300;
+	
+	public DrawColor(){
+		super();
+		this.setOpaque(false);
+	}
+	
+	protected void paintComponent(Graphics g1){
+		Graphics2D g = (Graphics2D)g1;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
 		
-		int imageWidth = 300;
-		int imageHeight = 300;
-		
-		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
-		Graphics graphics = image.getGraphics();
-		Graphics2D g = (Graphics2D)graphics;
 		try{
 			BasicStroke stroke = new BasicStroke(10);
 			g.setStroke(stroke);
@@ -53,12 +63,19 @@ public class DrawColor {
 			path.lineTo(160, 50);
 			path.curveTo(190, 200, 240, 140, 200, 100);
 			g.fill(path);
-			
-			ImageIO.write(image, "PNG", new File("F:\\Draw\\abcd.png"));
-					
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
-		graphics.dispose();
+	}catch(Exception e){
+		e.printStackTrace();
 	}
+	}
+	
+	public static void main(String[] args){
+		JFrame frame = new JFrame("几何图形绘制");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout());  
+		
+		frame.getContentPane().add(new DrawColor(), BorderLayout.CENTER);  
+		frame.setPreferredSize(new Dimension(400 + 25, 450));
+		frame.pack();
+		frame.setVisible(true);
+	}	
 }
